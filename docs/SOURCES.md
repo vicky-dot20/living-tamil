@@ -7,6 +7,7 @@ Living Tamil uses local Markdown as its canonical editorial layer. External APIs
 | Tamil Virtual Academy | Web collection | CC BY-SA 4.0 for TVA-owned text, images, audio, video and data | Source references and editorial research |
 | Tamil Wikisource | MediaWiki REST/Action APIs | Public domain or CC BY-SA compatible works | Planned public-domain text lookup |
 | Senkanthal Thirukkural API | REST JSON | MIT | Optional `/api/thirukkural/random` enrichment |
+| nramc Thirukkural API | REST JSON | MIT repository | On-demand attributed Tamil commentaries and English meanings; contributor should confirm third-party commentary rights before commercial release |
 | CICT Digital Library | IIIF Presentation/Image APIs | Item-specific; examples include CC BY and CC BY-NC | Linked research only until each manifest is checked |
 | Sentamizh Corpus | Repository/dataset | Apache-2.0 at dataset level | Candidate structured import; inherited fields require provenance review |
 | Project Madurai | HTML/PDF electronic texts | Reuse conditions vary; site describes personal-use downloads | Linked research; no bulk commercial import in this MVP |
