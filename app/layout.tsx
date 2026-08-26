@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import "./mvp.css";
 
 export const metadata: Metadata = {
   title: "Living Tamil — Discover Tamil every day",
