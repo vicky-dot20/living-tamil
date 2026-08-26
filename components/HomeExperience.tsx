@@ -4,6 +4,7 @@ import { ArrowRight, BookOpen, Check, Clock, Compass, Search, Sparkles } from "l
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import type { Discovery } from "@/lib/content";
+import KuralToday from "./KuralToday";
 
 type Journey = { slug: string; title: string; category: string; accent: string; items: Discovery[] };
 
@@ -27,6 +28,8 @@ export default function HomeExperience({ discoveries, journeys }: { discoveries:
         <div><p className="eyebrow">Continue your journey · {first.duration} min</p><h2>{first.title}</h2><p>{first.summary}</p><Link href={`/discover/${first.slug}`}>Open discovery <ArrowRight size={17}/></Link></div>
       </section>
 
+      <KuralToday />
+
       <section className="section-head"><div><p className="eyebrow"><Compass size={13}/> Guided journeys</p><h2>Follow an idea, not a random feed.</h2></div></section>
       <section className="journey-grid">
         {journeys.map((journey) => {
@@ -38,7 +41,7 @@ export default function HomeExperience({ discoveries, journeys }: { discoveries:
         })}
       </section>
 
-      <section className="library-head"><div><p className="eyebrow"><BookOpen size={13}/> Explore the corpus</p><h2>All discoveries</h2></div><label><Search size={16}/><input value={query} onChange={(event)=>setQuery(event.target.value)} placeholder="Search words, places, poems…"/></label></section>
+      <section className="library-head" id="library"><div><p className="eyebrow"><BookOpen size={13}/> Explore the corpus</p><h2>All discoveries</h2></div><label><Search size={16}/><input value={query} onChange={(event)=>setQuery(event.target.value)} placeholder="Search words, places, poems…"/></label></section>
       <section className="library-grid">
         {filtered.map((item) => <Link className="library-card" href={`/discover/${item.slug}`} key={item.slug}><div className={`library-icon art-${item.accent}`}>{completed.includes(item.slug)?<Check size={18}/>:item.tamilTitle.slice(0,2)}</div><div><small>{item.category} · {item.duration} min</small><h3>{item.title}</h3><p>{item.summary}</p></div><ArrowRight size={17}/></Link>)}
       </section>
@@ -46,4 +49,4 @@ export default function HomeExperience({ discoveries, journeys }: { discoveries:
   </div>;
 }
 
-export function Header() { return <header className="topbar"><Link className="brand" href="/"><span>ழ</span><div><strong>Living Tamil</strong><small>தமிழை தினமும் கண்டறியுங்கள்</small></div></Link><nav><Link href="/">Journeys</Link><a href="#library">Library</a></nav></header>; }
+export function Header() { return <header className="topbar"><Link className="brand" href="/"><span>ழ</span><div><strong>Living Tamil</strong><small>தமிழை தினமும் கண்டறியுங்கள்</small></div></Link><nav><Link href="/">Journeys</Link><Link href="/kural">Thirukkural</Link><a href="/#library">Library</a></nav></header>; }

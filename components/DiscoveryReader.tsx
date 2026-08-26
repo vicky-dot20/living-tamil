@@ -23,7 +23,18 @@ export default function DiscoveryReader({ discovery, journey }: { discovery: Dis
       <div className={`reader-hero art-${discovery.accent}`}><div><p>{discovery.category} · {discovery.duration} min</p><span>{discovery.tamilTitle}</span><h1>{discovery.title}</h1></div><div className="reader-actions"><button onClick={toggleSaved} aria-label="Bookmark"><Bookmark fill={saved?"currentColor":"none"}/></button><button onClick={share} aria-label="Share">{copied?<Check/>:<Share2/>}</button></div></div>
       <section className="reader-content"><p className="hook">{discovery.hook}</p><div className="mode-tabs">{modes.map(item=><button className={mode===item?"active":""} onClick={()=>setMode(item)} key={item}>{item==="original"?"மூலம்":item==="simple"?"எளிய தமிழ்":"English"}</button>)}</div><div className="reading" lang={mode==="english"?"en":"ta"}>{reading}</div>
         <div className="context-grid"><div><small>Why it matters</small><h2>Read the world around the words.</h2><p>{discovery.context}</p></div><div><small>Connection to today</small><h2>The idea is still alive.</h2><p>{discovery.today}</p></div></div>
-        <div className="provenance"><BookOpen size={18}/><div><small>Source & rights</small><a href={discovery.sourceUrl} target="_blank" rel="noreferrer">{discovery.sourceTitle} <ExternalLink size={13}/></a><p>{discovery.license} · {discovery.reviewStatus.replaceAll("-"," ")}</p></div></div>
+        <details className="provenance">
+          <summary><BookOpen size={18}/><span><strong>Sources & editorial notes</strong><small>Optional · provenance and rights</small></span></summary>
+          <div className="provenance-body">
+            <p>The complete learning experience is provided above. This reference is included for transparency, attribution, and deeper verification.</p>
+            <dl>
+              <div><dt>Primary collection</dt><dd>{discovery.sourceTitle}</dd></div>
+              <div><dt>Reuse status</dt><dd>{discovery.license}</dd></div>
+              <div><dt>Editorial status</dt><dd>{discovery.reviewStatus.replaceAll("-"," ")}</dd></div>
+            </dl>
+            <a href={discovery.sourceUrl} target="_blank" rel="noreferrer">Inspect the original source <ExternalLink size={13}/></a>
+          </div>
+        </details>
         <button className={`complete-button ${done?"done":""}`} onClick={complete}>{done?<Check size={18}/>:null}{done?"Discovery completed":"Mark complete"}</button>
       </section>
     </article>

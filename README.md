@@ -11,6 +11,7 @@ A mobile-first, open-source cultural discovery product for young Tamil speakers.
 - Local journey completion and bookmark persistence
 - Source, licence and review status on every item
 - Optional cached proxy for the MIT-licensed Senkanthal Thirukkural API
+- Complete in-app Thirukkural library with 1,330 couplets, three Paals, 133 Athikaarams, Tamil-text/number search, filters, and copy actions
 - Static generation for every discovery route
 
 ## Run locally
