@@ -41,12 +41,15 @@ External APIs supply structured source material; they do not replace editorial j
 
 ## Contributing and project direction
 
+Start by opening a structured issue. Once its scope is accepted and assigned, work from `dev` on a dedicated branch and submit a linked pull request back to `dev`. Maintainers review before merge; culturally sensitive or scholarly material can require an additional subject review. Read the [contribution guide](CONTRIBUTING.md) before beginning substantial work.
+
 - [Research and product thesis](docs/RESEARCH.md)
 - [Roadmap](docs/ROADMAP.md)
 - [Source and rights register](docs/SOURCES.md)
 - [Editorial policy](docs/EDITORIAL_POLICY.md)
 - [Contribution guide](CONTRIBUTING.md)
 - [Security policy](SECURITY.md)
+- [Community standards](CODE_OF_CONDUCT.md)
 
 Items marked `needs-scholar-review`, `needs-archaeology-review`, or `draft` must never be presented as expert-reviewed. Corrections with reliable sources are especially welcome.
 
