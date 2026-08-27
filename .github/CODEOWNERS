@@ -1,0 +1,6 @@
+# Require the repository maintainer to review every area by default.
+* @vicky-dot20
+
+# Cultural and editorial material always requires maintainer routing.
+/content/ @vicky-dot20
+/docs/ @vicky-dot20

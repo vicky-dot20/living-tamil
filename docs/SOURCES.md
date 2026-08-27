@@ -16,6 +16,6 @@ Living Tamil uses local Markdown as its canonical editorial layer. External APIs
 
 Every discovery must declare `sourceTitle`, `sourceUrl`, `license`, and `reviewStatus`. A source collection's openness does not automatically clear every modern translation, commentary, photograph, recording, or derived edition.
 
-## Product content licence
+## Repository licensing
 
-The software repository currently carries an MIT code licence. Before accepting public content contributions, add a separate content contribution agreement and an explicit content licence—recommended: CC BY-SA 4.0 for original editorial material.
+Software is under MIT. Original Living Tamil editorial contributions are under CC BY-SA 4.0. Third-party rights remain controlling. See `CONTENT_LICENSE.md` for the complete policy.

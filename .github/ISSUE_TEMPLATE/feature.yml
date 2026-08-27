@@ -1,0 +1,44 @@
+name: Feature proposal
+description: Propose a user-focused improvement before implementation.
+title: "[Feature]: "
+labels: ["type: feature", "status: needs-triage"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: User problem
+      description: Who has this problem, and what are they unable to do today?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed outcome
+      description: Describe the smallest useful outcome, not only the implementation.
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence or research
+      description: Link interviews, comparable products, sources, metrics, or relevant research.
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Suggested acceptance criteria
+      placeholder: "- [ ] A user can…"
+    validations:
+      required: true
+  - type: textarea
+    id: risks
+    attributes:
+      label: Editorial, rights, privacy, or accessibility risks
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Checks
+      options:
+        - label: I searched existing issues and the roadmap.
+          required: true
+        - label: I will wait for scope agreement and assignment before substantial implementation.
+          required: true
