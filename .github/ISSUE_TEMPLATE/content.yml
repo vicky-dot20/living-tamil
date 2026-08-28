@@ -1,0 +1,55 @@
+name: Content, source, or research proposal
+description: Propose a discovery, correction, translation, source, or research update.
+title: "[Content]: "
+labels: ["type: content", "status: needs-triage"]
+body:
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Contribution type
+      options:
+        - Factual or textual correction
+        - New discovery or journey
+        - Translation or simple-Tamil improvement
+        - New source or dataset
+        - Rights or attribution correction
+        - Research document update
+    validations:
+      required: true
+  - type: textarea
+    id: change
+    attributes:
+      label: Proposed change
+      description: Identify the exact page or statement and explain the change.
+    validations:
+      required: true
+  - type: textarea
+    id: sources
+    attributes:
+      label: Direct sources
+      description: Provide titles, creators or institutions, and direct URLs.
+    validations:
+      required: true
+  - type: textarea
+    id: rights
+    attributes:
+      label: Licence and rights
+      description: State the licence, public-domain basis, permission, and required attribution. Say “unclear” when uncertain.
+    validations:
+      required: true
+  - type: textarea
+    id: review
+    attributes:
+      label: Review needed
+      description: Note Tamil-language, literary, historical, archaeological, legal, or other expertise required.
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Checks
+      options:
+        - label: I read the editorial policy and searched existing issues.
+          required: true
+        - label: I have not treated AI output as a source.
+          required: true
+        - label: I will wait for scope agreement and assignment before substantial implementation.
+          required: true

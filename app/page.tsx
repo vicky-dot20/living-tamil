@@ -1,5 +1,6 @@
-import Discovery from "@/components/Discovery";
+import HomeExperience from "@/components/HomeExperience";
+import { getDiscoveries, getJourneys } from "@/lib/content";
 
 export default function Home() {
-  return <Discovery />;
+  return <HomeExperience discoveries={getDiscoveries()} journeys={getJourneys()} />;
 }
