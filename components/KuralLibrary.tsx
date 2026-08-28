@@ -2,7 +2,8 @@
 
 import { ArrowLeft, BookMarked, Check, ChevronDown, Copy, Search, X } from "lucide-react";
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useSyncExternalStore } from "react";
+import CorrectionLink from "./CorrectionLink";
 import { Header } from "./HomeExperience";
 
 type Library = {
@@ -15,21 +16,28 @@ type Meaning = { number: number; chapter: string; section: string; tamil: { auth
 
 const pageSize = 30;
 
+function useRequestedKural() {
+  const search = useSyncExternalStore(() => () => undefined, () => window.location.search, () => "");
+  const requested = Number(new URLSearchParams(search).get("number"));
+  return requested >= 1 && requested <= 1330 ? requested : null;
+}
+
 export default function KuralLibrary() {
+  const requested = useRequestedKural();
   const [library, setLibrary] = useState<Library | null>(null);
   const [error, setError] = useState(false);
-  const [query, setQuery] = useState("");
+  const [queryOverride, setQuery] = useState<string | null>(null);
+  const query = queryOverride ?? String(requested ?? "");
   const [paal, setPaal] = useState(0);
   const [chapter, setChapter] = useState(0);
   const [limit, setLimit] = useState(pageSize);
-  const [selected, setSelected] = useState<number | null>(null);
+  const [selectedOverride, setSelected] = useState<number | null | undefined>(undefined);
+  const selected = selectedOverride === undefined ? requested : selectedOverride;
   const [copied, setCopied] = useState<number | null>(null);
   const [meanings, setMeanings] = useState<Record<number, Meaning>>({});
   const [meaningErrors, setMeaningErrors] = useState<number[]>([]);
 
   useEffect(() => {
-    const requested = Number(new URLSearchParams(window.location.search).get("number"));
-    if (requested >= 1 && requested <= 1330) { setQuery(String(requested)); setSelected(requested); }
     fetch("/api/thirukkural/library").then((response) => { if (!response.ok) throw new Error(); return response.json(); }).then(setLibrary).catch(() => setError(true));
   }, []);
 
@@ -68,6 +76,7 @@ export default function KuralLibrary() {
         {!meaning&&!meaningErrors.includes(item.number)&&<p className="meaning-loading">Loading Tamil and English meanings…</p>}
         {meaningErrors.includes(item.number)&&<p className="meaning-loading">Meaning is temporarily unavailable. Please try this Kural again later.</p>}
         {meaning&&<><div className="meaning-block"><small>தமிழ் பொருள் · {meaning.tamil[0].author}</small><p lang="ta">{meaning.tamil[0].text}</p></div><div className="meaning-block"><small>English meaning</small><p>{meaning.english}</p></div><details className="commentaries"><summary>Compare Tamil commentaries</summary>{meaning.tamil.slice(1).map(entry=><div key={entry.author}><strong>{entry.author}</strong><p lang="ta">{entry.text}</p></div>)}</details><p className="meaning-credit">Meanings: {meaning.source} · {meaning.license}</p></>}
+        <CorrectionLink item={`Kural ${item.number} — ${chapterData?.athikaaram ?? "Thirukkural"}`}/>
         <div className="kural-detail-actions"><button onClick={()=>copyKural(item.number,item.lines)}>{copied===item.number?<Check size={15}/>:<Copy size={15}/>} {copied===item.number?"Copied":"Copy Kural"}</button>{item.number===1&&<Link href="/discover/11-kural-beginning">Open contextual discovery</Link>}</div>
       </div>}</article>})}</section>
       {limit<results.length&&<button className="load-more" onClick={()=>setLimit(limit+pageSize)}>Show {Math.min(pageSize,results.length-limit)} more Kurals</button>}
