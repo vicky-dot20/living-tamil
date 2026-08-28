@@ -4,18 +4,23 @@ import { ArrowLeft, ArrowRight, Bookmark, BookOpen, Check, ExternalLink, Share2 
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import type { Discovery } from "@/lib/content";
+import { recordMetric } from "@/lib/analytics";
+import { useStoredStringList, writeStoredStringList } from "@/lib/local-state";
+import CorrectionLink from "./CorrectionLink";
 import { Header } from "./HomeExperience";
 
 const modes = ["original", "simple", "english"] as const;
 type Mode = typeof modes[number];
 
 export default function DiscoveryReader({ discovery, journey }: { discovery: Discovery; journey: Discovery[] }) {
-  const [mode,setMode]=useState<Mode>("original"); const [saved,setSaved]=useState(false); const [done,setDone]=useState(false); const [copied,setCopied]=useState(false);
+  const [mode,setMode]=useState<Mode>("original"); const [copied,setCopied]=useState(false);
+  const savedItems=useStoredStringList("living-tamil-saved"); const progress=useStoredStringList("living-tamil-progress");
   const index=journey.findIndex((item)=>item.slug===discovery.slug); const previous=journey[index-1]; const next=journey[index+1];
-  useEffect(()=>{const progress: string[]=JSON.parse(localStorage.getItem("living-tamil-progress")||"[]");setDone(progress.includes(discovery.slug));setSaved(JSON.parse(localStorage.getItem("living-tamil-saved")||"[]").includes(discovery.slug));},[discovery.slug]);
-  function toggleSaved(){const items:string[]=JSON.parse(localStorage.getItem("living-tamil-saved")||"[]");const updated=items.includes(discovery.slug)?items.filter(x=>x!==discovery.slug):[...items,discovery.slug];localStorage.setItem("living-tamil-saved",JSON.stringify(updated));setSaved(updated.includes(discovery.slug));}
-  function complete(){const items:string[]=JSON.parse(localStorage.getItem("living-tamil-progress")||"[]");if(!items.includes(discovery.slug))localStorage.setItem("living-tamil-progress",JSON.stringify([...items,discovery.slug]));setDone(true);}
-  async function share(){if(navigator.share)await navigator.share({title:discovery.title,url:location.href});else{await navigator.clipboard.writeText(location.href);setCopied(true);setTimeout(()=>setCopied(false),1500)}}
+  const saved=savedItems.includes(discovery.slug); const done=progress.includes(discovery.slug);
+  useEffect(()=>{recordMetric("discovery_view");},[discovery.slug]);
+  function toggleSaved(){const updated=saved?savedItems.filter(x=>x!==discovery.slug):[...savedItems,discovery.slug];writeStoredStringList("living-tamil-saved",updated);if(!saved)recordMetric("discovery_save");}
+  function complete(){if(done)return;const updated=[...progress,discovery.slug];writeStoredStringList("living-tamil-progress",updated);recordMetric("discovery_complete");if(journey.every(item=>updated.includes(item.slug)))recordMetric("journey_complete");}
+  async function share(){if(navigator.share)await navigator.share({title:discovery.title,url:location.href});else{await navigator.clipboard.writeText(location.href);setCopied(true);setTimeout(()=>setCopied(false),1500)}recordMetric("discovery_share");}
   const reading=mode==="original"?discovery.original:mode==="simple"?discovery.simple:discovery.english;
   return <div className="site-shell"><Header/><main className="reader-shell">
     <aside className="reader-rail"><Link href="/"><ArrowLeft size={16}/> All journeys</Link><p className="eyebrow">{discovery.journeyTitle}</p><h2>{index+1} of {journey.length}</h2>{journey.map((item,i)=><Link className={item.slug===discovery.slug?"current":""} href={`/discover/${item.slug}`} key={item.slug}><span>{i+1}</span>{item.tamilTitle}</Link>)}</aside>
@@ -35,9 +40,10 @@ export default function DiscoveryReader({ discovery, journey }: { discovery: Dis
             <a href={discovery.sourceUrl} target="_blank" rel="noreferrer">Inspect the original source <ExternalLink size={13}/></a>
           </div>
         </details>
+        <CorrectionLink item={`Discovery ${discovery.slug} — ${discovery.title}`}/>
         <button className={`complete-button ${done?"done":""}`} onClick={complete}>{done?<Check size={18}/>:null}{done?"Discovery completed":"Mark complete"}</button>
       </section>
     </article>
-    <nav className="reader-nav">{previous?<Link href={`/discover/${previous.slug}`}><ArrowLeft/> <span><small>Previous</small>{previous.title}</span></Link>:<span/>}{next?<Link href={`/discover/${next.slug}`}><span><small>Next</small>{next.title}</span><ArrowRight/></Link>:<Link href="/"><span><small>Journey complete</small>Explore another journey</span><ArrowRight/></Link>}</nav>
+    <nav className="reader-nav">{previous?<Link href={`/discover/${previous.slug}`}><ArrowLeft/> <span><small>Previous</small>{previous.title}</span></Link>:<span/>}{next?<Link href={`/discover/${next.slug}`} onClick={()=>recordMetric("journey_continue")}><span><small>Next</small>{next.title}</span><ArrowRight/></Link>:<Link href="/"><span><small>Journey complete</small>Explore another journey</span><ArrowRight/></Link>}</nav>
   </main></div>;
 }

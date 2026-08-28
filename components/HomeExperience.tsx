@@ -1,17 +1,17 @@
 "use client";
 
-import { ArrowRight, BookOpen, Check, Clock, Compass, Search, Sparkles } from "lucide-react";
+import { ArrowRight, BookOpen, Check, Compass, Search, Sparkles } from "lucide-react";
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import type { Discovery } from "@/lib/content";
+import { useStoredStringList } from "@/lib/local-state";
 import KuralToday from "./KuralToday";
 
 type Journey = { slug: string; title: string; category: string; accent: string; items: Discovery[] };
 
 export default function HomeExperience({ discoveries, journeys }: { discoveries: Discovery[]; journeys: Journey[] }) {
   const [query, setQuery] = useState("");
-  const [completed, setCompleted] = useState<string[]>([]);
-  useEffect(() => { setCompleted(JSON.parse(localStorage.getItem("living-tamil-progress") || "[]")); }, []);
+  const completed = useStoredStringList("living-tamil-progress");
   const filtered = useMemo(() => discoveries.filter((item) => `${item.title} ${item.tamilTitle} ${item.category} ${item.summary}`.toLowerCase().includes(query.toLowerCase())), [discoveries, query]);
   const first = discoveries.find((item) => !completed.includes(item.slug)) || discoveries[0];
 
@@ -49,4 +49,4 @@ export default function HomeExperience({ discoveries, journeys }: { discoveries:
   </div>;
 }
 
-export function Header() { return <header className="topbar"><Link className="brand" href="/"><span>ழ</span><div><strong>Living Tamil</strong><small>தமிழை தினமும் கண்டறியுங்கள்</small></div></Link><nav><Link href="/">Journeys</Link><Link href="/kural">Thirukkural</Link><a href="/#library">Library</a></nav></header>; }
+export function Header() { return <header className="topbar"><Link className="brand" href="/"><span>ழ</span><div><strong>Living Tamil</strong><small>தமிழை தினமும் கண்டறியுங்கள்</small></div></Link><nav><Link href="/">Journeys</Link><Link href="/kural">Thirukkural</Link><Link href="/#library">Library</Link><Link href="/insights">Insights</Link></nav></header>; }
