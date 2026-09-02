@@ -6,6 +6,7 @@ import { useMemo, useState } from "react";
 import type { Discovery } from "@/lib/content";
 import { useStoredStringList } from "@/lib/local-state";
 import KuralToday from "./KuralToday";
+import Onboarding from "./Onboarding";
 
 type Journey = { slug: string; title: string; category: string; accent: string; items: Discovery[] };
 
@@ -16,6 +17,7 @@ export default function HomeExperience({ discoveries, journeys }: { discoveries:
   const first = discoveries.find((item) => !completed.includes(item.slug)) || discoveries[0];
 
   return <div className="site-shell">
+    <Onboarding startHref={`/discover/${first.slug}`} />
     <Header />
     <main className="home">
       <section className="home-hero">

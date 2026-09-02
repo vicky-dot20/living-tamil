@@ -33,3 +33,21 @@ export function writeStoredStringList(key: string, value: string[]) {
   localStorage.setItem(key, JSON.stringify(value));
   window.dispatchEvent(new Event(stateEvent));
 }
+
+export function readStoredStringList(key: string) {
+  try {
+    const value: unknown = JSON.parse(localStorage.getItem(key) ?? emptyList);
+    return Array.isArray(value) ? value.filter((item): item is string => typeof item === "string") : [];
+  } catch {
+    return [];
+  }
+}
+
+export function useStoredValue(key: string) {
+  return useSyncExternalStore(subscribe, () => localStorage.getItem(key), () => null);
+}
+
+export function writeStoredValue(key: string, value: string) {
+  localStorage.setItem(key, value);
+  window.dispatchEvent(new Event(stateEvent));
+}

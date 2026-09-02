@@ -1,0 +1,2 @@
+import type { MetadataRoute } from "next";
+export default function manifest():MetadataRoute.Manifest{return{name:"Living Tamil",short_name:"Living Tamil",description:"Guided five-minute journeys through Tamil language, literature, history and culture.",start_url:"/",display:"standalone",background_color:"#f7f4ec",theme_color:"#193f2d",icons:[{src:"/icons/living-tamil.svg",sizes:"any",type:"image/svg+xml",purpose:"any"},{src:"/icons/living-tamil-maskable.svg",sizes:"any",type:"image/svg+xml",purpose:"maskable"}]}}
