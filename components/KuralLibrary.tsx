@@ -4,6 +4,7 @@ import { ArrowLeft, BookMarked, Check, ChevronDown, Copy, Search, X } from "luci
 import Link from "next/link";
 import { useEffect, useMemo, useState, useSyncExternalStore } from "react";
 import CorrectionLink from "./CorrectionLink";
+import { useStoredStringList } from "@/lib/local-state";
 import { Header } from "./HomeExperience";
 
 type Library = {
@@ -24,6 +25,8 @@ function useRequestedKural() {
 
 export default function KuralLibrary() {
   const requested = useRequestedKural();
+  const bookmarks = useStoredStringList("living-tamil-kural-bookmarks");
+  const recent = useStoredStringList("living-tamil-kural-recent");
   const [library, setLibrary] = useState<Library | null>(null);
   const [error, setError] = useState(false);
   const [queryOverride, setQuery] = useState<string | null>(null);
@@ -63,6 +66,7 @@ export default function KuralLibrary() {
   return <div className="site-shell"><Header/><main className="kural-library">
     <Link className="library-back" href="/"><ArrowLeft size={16}/> Back to journeys</Link>
     <section className="kural-hero"><div><p className="eyebrow"><BookMarked size={13}/> Complete open corpus</p><h1>திருக்குறள்</h1><p>Browse all 1,330 couplets through the three Paals and 133 Athikaarams—without leaving Living Tamil.</p></div><div><strong>1,330</strong><span>couplets</span><strong>133</strong><span>chapters</span></div></section>
+    {(bookmarks.length>0||recent.length>0)&&<section className="kural-trail">{bookmarks.length>0&&<div><small>Bookmarked</small><nav>{bookmarks.map(id=><Link href={`/kural/${id}`} key={id}>Kural {id}</Link>)}</nav></div>}{recent.length>0&&<div><small>Recently read</small><nav>{recent.map(id=><Link href={`/kural/${id}`} key={id}>Kural {id}</Link>)}</nav></div>}</section>}
 
     {error && <div className="library-state">The public Kural data service is temporarily unavailable. Your journeys still work normally.</div>}
     {!library && !error && <div className="library-state">Preparing the complete Kural library…</div>}
@@ -77,7 +81,7 @@ export default function KuralLibrary() {
         {meaningErrors.includes(item.number)&&<p className="meaning-loading">Meaning is temporarily unavailable. Please try this Kural again later.</p>}
         {meaning&&<><div className="meaning-block"><small>தமிழ் பொருள் · {meaning.tamil[0].author}</small><p lang="ta">{meaning.tamil[0].text}</p></div><div className="meaning-block"><small>English meaning</small><p>{meaning.english}</p></div><details className="commentaries"><summary>Compare Tamil commentaries</summary>{meaning.tamil.slice(1).map(entry=><div key={entry.author}><strong>{entry.author}</strong><p lang="ta">{entry.text}</p></div>)}</details><p className="meaning-credit">Meanings: {meaning.source} · {meaning.license}</p></>}
         <CorrectionLink item={`Kural ${item.number} — ${chapterData?.athikaaram ?? "Thirukkural"}`}/>
-        <div className="kural-detail-actions"><button onClick={()=>copyKural(item.number,item.lines)}>{copied===item.number?<Check size={15}/>:<Copy size={15}/>} {copied===item.number?"Copied":"Copy Kural"}</button>{item.number===1&&<Link href="/discover/11-kural-beginning">Open contextual discovery</Link>}</div>
+        <div className="kural-detail-actions"><button onClick={()=>copyKural(item.number,item.lines)}>{copied===item.number?<Check size={15}/>:<Copy size={15}/>} {copied===item.number?"Copied":"Copy Kural"}</button><Link href={`/kural/${item.number}`}>Focused reading</Link>{item.number===1&&<Link href="/discover/11-kural-beginning">Open contextual discovery</Link>}</div>
       </div>}</article>})}</section>
       {limit<results.length&&<button className="load-more" onClick={()=>setLimit(limit+pageSize)}>Show {Math.min(pageSize,results.length-limit)} more Kurals</button>}
       <footer className="corpus-credit">Corpus supplied by {library.source} · {library.license} licence. Living Tamil editorial notes are maintained separately.</footer>
