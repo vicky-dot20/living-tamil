@@ -39,7 +39,7 @@ export default function KuralToday() {
         </div>
       )}
 
-      <Link href="/discover/11-kural-beginning">Understand how to read a Kural <ArrowRight size={16} /></Link>
+      <Link href={kural?`/kural/${kural.id}`:"/discover/11-kural-beginning"}>{kural?"Read meaning and save":"Understand how to read a Kural"} <ArrowRight size={16} /></Link>
     </section>
   );
 }

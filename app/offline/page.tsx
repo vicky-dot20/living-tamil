@@ -1,0 +1,2 @@
+import Link from "next/link";
+export default function OfflinePage(){return <main className="offline-page"><span>ழ</span><p className="eyebrow">You are offline</p><h1>Your Tamil journeys can still travel with you.</h1><p>Previously cached discoveries remain readable. Thirukkural meanings use public data services and need a connection unless the page was already opened.</p><Link href="/">Open cached journeys</Link></main>}
