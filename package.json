@@ -1,12 +1,13 @@
 {
   "name": "living-tamil",
-  "version": "0.1.0",
+  "version": "0.3.0",
   "private": true,
   "scripts": {
     "dev": "next dev --port 4050",
     "build": "next build",
     "start": "next start --port 4060",
-    "lint": "eslint"
+    "lint": "eslint",
+    "validate:content": "node scripts/validate-content.mjs"
   },
   "dependencies": {
     "lucide-react": "^0.468.0",

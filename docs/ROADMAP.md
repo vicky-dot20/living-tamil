@@ -2,6 +2,8 @@
 
 The roadmap follows evidence, not feature count.
 
+The release-by-release plan through `v0.5.0` is maintained in [VERSION_ROADMAP.md](VERSION_ROADMAP.md). Every planned capability must have an issue card, milestone, acceptance criteria, source/rights notes, and verification evidence before release.
+
 ## Now: make the MVP trustworthy and testable
 
 - Review the Five Landscapes journey with Tamil and subject experts.
