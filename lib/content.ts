@@ -3,11 +3,13 @@ import "server-only";
 import fs from "node:fs";
 import path from "node:path";
 
+export type WordAnnotation = { term: string; simple: string; english: string; sourceUrl: string; reviewStatus: string };
+
 export type Discovery = {
   slug: string; title: string; tamilTitle: string; journey: string; journeyTitle: string;
   order: number; duration: number; category: string; accent: string; summary: string;
   hook: string; original: string; simple: string; english: string; context: string; today: string;
-  sourceTitle: string; sourceUrl: string; license: string; reviewStatus: string;
+  sourceTitle: string; sourceUrl: string; license: string; reviewStatus: string; words: WordAnnotation[];
 };
 
 const contentDirectory = path.join(process.cwd(), "content", "discoveries");
@@ -33,6 +35,10 @@ function parseMarkdown(source: string): Omit<Discovery, "slug"> {
     original: clean(sections.original), simple: clean(sections.simple), english: clean(sections.english),
     context: clean(sections.context), today: clean(sections.today), sourceTitle: meta.sourceTitle,
     sourceUrl: meta.sourceUrl, license: meta.license, reviewStatus: meta.reviewStatus || "editorial-review",
+    words: clean(sections.words).split("\n").filter(Boolean).map((line) => {
+      const [term = "", simple = "", english = "", sourceUrl = meta.sourceUrl, reviewStatus = meta.reviewStatus || "editorial-review"] = line.split("|").map((part) => part.trim());
+      return { term, simple, english, sourceUrl, reviewStatus };
+    }).filter((word) => word.term && word.simple && word.english),
   };
 }
 
