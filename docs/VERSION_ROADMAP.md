@@ -33,6 +33,8 @@ Exit criteria: 75 validated records, no unlabelled rights state, accessible sear
 
 Goal: help readers retain words and ideas rather than merely browse them.
 
+Status: in progress on `codex/v0.4-learning`. Issue cards #32–#37 track the release; the first slice covers contextual word annotations, the local glossary, and reader preferences.
+
 Planned cards:
 
 1. Add contextual word annotations to the Markdown content model.
