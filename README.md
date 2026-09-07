@@ -45,6 +45,7 @@ Start by opening a structured issue. Once its scope is accepted and assigned, wo
 
 - [Research and product thesis](docs/RESEARCH.md)
 - [Roadmap](docs/ROADMAP.md)
+- [Version roadmap through v0.5.0](docs/VERSION_ROADMAP.md)
 - [Source and rights register](docs/SOURCES.md)
 - [Editorial policy](docs/EDITORIAL_POLICY.md)
 - [Contribution guide](CONTRIBUTING.md)
