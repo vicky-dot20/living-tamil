@@ -10,6 +10,7 @@ The product thesis is intentionally narrow: **help someone understand one meanin
 - A layered contextual reader and searchable discovery library
 - Local journey progress and bookmarks
 - A complete in-app Thirukkural library: 1,330 Kurals, 3 Paals, 133 Athikaarams, search, filters, Tamil commentaries, and English meanings
+- A provenance-aware library search spanning local journeys, direct Kurals, and Tamil Wikisource catalogue metadata
 - Cached server-side integration with the Senkanthal and nramc Thirukkural APIs
 - Source, licence, attribution, and review status in the editorial model
 
@@ -45,6 +46,7 @@ Start by opening a structured issue. Once its scope is accepted and assigned, wo
 
 - [Research and product thesis](docs/RESEARCH.md)
 - [Roadmap](docs/ROADMAP.md)
+- [Version roadmap through v0.5.0](docs/VERSION_ROADMAP.md)
 - [Source and rights register](docs/SOURCES.md)
 - [Editorial policy](docs/EDITORIAL_POLICY.md)
 - [Contribution guide](CONTRIBUTING.md)
