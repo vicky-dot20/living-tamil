@@ -1,3 +1,4 @@
+import { upstreamError, upstreamSignal } from "@/lib/upstream";
 const BASE_URL = "https://thirukkural.senkanthal.org";
 
 type Paal = { id: number; paal: string; athikaaram: { count: number } };
@@ -6,7 +7,7 @@ type RawKural = { id: number; kural: string };
 
 export async function GET() {
   try {
-    const options = { next: { revalidate: 86400 } } as const;
+    const options = { next: { revalidate: 86400 }, signal: upstreamSignal() } as const;
     const [paalResponse, chapterResponse, kuralResponse] = await Promise.all([
       fetch(`${BASE_URL}/paal`, options),
       fetch(`${BASE_URL}/athikaaram`, options),
@@ -25,7 +26,7 @@ export async function GET() {
     return Response.json({ paals, chapters, kurals, source: "Senkanthal Thirukkural API", license: "MIT" }, {
       headers: { "Cache-Control": "public, s-maxage=86400, stale-while-revalidate=604800" },
     });
-  } catch {
-    return Response.json({ error: "The Kural library is temporarily unavailable." }, { status: 503 });
+  } catch (error) {
+    return Response.json({ error: "The Kural library is temporarily unavailable.", reason: upstreamError(error), retryable: true }, { status: 503, headers: { "Retry-After": "60" } });
   }
 }

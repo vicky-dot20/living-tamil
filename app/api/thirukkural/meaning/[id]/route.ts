@@ -1,3 +1,4 @@
+import { upstreamError, upstreamSignal } from "@/lib/upstream";
 const BASE_URL = "https://tamil-kural-api.vercel.app/api/kural";
 
 type UpstreamMeaning = {
@@ -12,7 +13,7 @@ export async function GET(_request: Request, { params }: { params: Promise<{ id:
   const number = Number(id);
   if (!Number.isInteger(number) || number < 1 || number > 1330) return Response.json({ error: "Invalid Kural number." }, { status: 400 });
   try {
-    const response = await fetch(`${BASE_URL}/${number}`, { next: { revalidate: 604800 } });
+    const response = await fetch(`${BASE_URL}/${number}`, { next: { revalidate: 604800 }, signal: upstreamSignal() });
     if (!response.ok) throw new Error("Upstream API failed");
     const data = await response.json() as UpstreamMeaning;
     return Response.json({
@@ -28,7 +29,7 @@ export async function GET(_request: Request, { params }: { params: Promise<{ id:
       source: "nramc/thirukkural-api",
       license: "MIT repository; commentary attribution retained",
     }, { headers: { "Cache-Control": "public, s-maxage=604800, stale-while-revalidate=2592000" } });
-  } catch {
-    return Response.json({ error: "Meaning is temporarily unavailable." }, { status: 503 });
+  } catch (error) {
+    return Response.json({ error: "Meaning is temporarily unavailable.", reason: upstreamError(error), retryable: true }, { status: 503, headers: { "Retry-After": "60" } });
   }
 }
