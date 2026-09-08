@@ -28,3 +28,5 @@ Tamil term | simple Tamil meaning | English meaning | direct source URL | review
 ```
 
 Meanings must describe the word in that discovery's context. Do not imply that a contextual gloss is the only possible meaning. Every annotation inherits the project's source, rights, and human-review requirements.
+
+An optional checkpoint uses four lines under `## Checkpoint`: question, pipe-separated choices, zero-based answer index, and explanatory feedback. Checkpoints reinforce understanding; they do not gate progress or assign scores.

@@ -9,6 +9,7 @@ import { useStoredStringList, writeStoredStringList } from "@/lib/local-state";
 import CorrectionLink from "./CorrectionLink";
 import { Header } from "./HomeExperience";
 import ReaderLearningTools, { useReaderPreferences } from "./ReaderLearningTools";
+import DiscoveryCheckpoint from "./DiscoveryCheckpoint";
 
 const modes = ["original", "simple", "english"] as const;
 type Mode = typeof modes[number];
@@ -19,7 +20,7 @@ export default function DiscoveryReader({ discovery, journey }: { discovery: Dis
   const savedItems=useStoredStringList("living-tamil-saved"); const progress=useStoredStringList("living-tamil-progress");
   const index=journey.findIndex((item)=>item.slug===discovery.slug); const previous=journey[index-1]; const next=journey[index+1];
   const saved=savedItems.includes(discovery.slug); const done=progress.includes(discovery.slug);
-  useEffect(()=>{recordMetric("discovery_view");},[discovery.slug]);
+  useEffect(()=>{recordMetric("discovery_view"); const current=JSON.parse(localStorage.getItem("living-tamil-recent")??"[]") as string[]; writeStoredStringList("living-tamil-recent",[discovery.slug,...current.filter((slug)=>slug!==discovery.slug)].slice(0,8));},[discovery.slug]);
   function toggleSaved(){const updated=saved?savedItems.filter(x=>x!==discovery.slug):[...savedItems,discovery.slug];writeStoredStringList("living-tamil-saved",updated);if(!saved)recordMetric("discovery_save");}
   function complete(){if(done)return;const updated=[...progress,discovery.slug];writeStoredStringList("living-tamil-progress",updated);recordMetric("discovery_complete");if(journey.every(item=>updated.includes(item.slug)))recordMetric("journey_complete");}
   async function share(){if(navigator.share)await navigator.share({title:discovery.title,text:discovery.summary,url:location.href});else{await navigator.clipboard.writeText(location.href);setCopied(true);setTimeout(()=>setCopied(false),1500)}setShareStatus("Discovery link ready to share");recordMetric("discovery_share");}
@@ -44,6 +45,7 @@ export default function DiscoveryReader({ discovery, journey }: { discovery: Dis
           </div>
         </details>
         <ReaderLearningTools words={discovery.words}/>
+        <DiscoveryCheckpoint checkpoint={discovery.checkpoint}/>
         <CorrectionLink item={`Discovery ${discovery.slug} — ${discovery.title}`}/>
         <button className={`complete-button ${done?"done":""}`} onClick={complete}>{done?<Check size={18}/>:null}{done?"Discovery completed":"Mark complete"}</button>
       </section>

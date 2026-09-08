@@ -7,6 +7,7 @@ import type { Discovery } from "@/lib/content";
 import { useStoredStringList } from "@/lib/local-state";
 import KuralToday from "./KuralToday";
 import Onboarding from "./Onboarding";
+import PersonalLibrary from "./PersonalLibrary";
 
 type Journey = { slug: string; title: string; category: string; accent: string; items: Discovery[] };
 
@@ -31,6 +32,7 @@ export default function HomeExperience({ discoveries, journeys }: { discoveries:
       </section>
 
       <KuralToday />
+      <PersonalLibrary discoveries={discoveries}/>
 
       <section className="section-head"><div><p className="eyebrow"><Compass size={13}/> Guided journeys</p><h2>Follow an idea, not a random feed.</h2></div></section>
       <section className="journey-grid">
@@ -51,4 +53,4 @@ export default function HomeExperience({ discoveries, journeys }: { discoveries:
   </div>;
 }
 
-export function Header() { return <header className="topbar"><Link className="brand" href="/"><span>ழ</span><div><strong>Living Tamil</strong><small>தமிழை தினமும் கண்டறியுங்கள்</small></div></Link><nav><Link href="/">Journeys</Link><Link href="/library">Library</Link><Link href="/kural">Thirukkural</Link><Link href="/insights">Insights</Link></nav></header>; }
+export function Header() { return <header className="topbar"><Link className="brand" href="/"><span>ழ</span><div><strong>Living Tamil</strong><small>தமிழை தினமும் கண்டறியுங்கள்</small></div></Link><nav><Link href="/">Journeys</Link><Link href="/library">Library</Link><Link href="/kural">Thirukkural</Link><Link href="/offline">Offline</Link><Link href="/insights">Insights</Link></nav></header>; }
