@@ -25,3 +25,12 @@ Kurinji is the mountain landscape. In the convention of Sangam love poetry, it i
 Thinai joined place, time, season, plants, livelihood and emotion. Kurinji’s remote paths and night setting created a recognizable world for private union.
 ## Today
 We still use setting to signal emotion in cinema and music. Sangam poetry made that relationship into a detailed poetic system.
+## Words
+திணை | நிலம், காலம், வாழ்வு, உணர்வு ஆகியவற்றை இணைக்கும் பாடல் மரபு | A poetic convention joining landscape, time, life and emotion | https://www.tamilvu.org/en/library-content | needs-scholar-review
+குறிஞ்சி | மலை மற்றும் மலை சார்ந்த காதல் சூழல் | The mountain landscape and its love-poetry setting | https://www.tamilvu.org/en/library-content | needs-scholar-review
+
+## Checkpoint
+சங்கக் கவிதையில் குறிஞ்சி எதை இணைக்கிறது?
+மலை நிலமும் காதலர் கூடுதலும் | கடலும் பிரிவும் | வயலும் ஊடலும்
+0
+குறிஞ்சி என்பது ஒரு பூவின் பெயர் மட்டும் அல்ல; மலைச் சூழலையும் காதலர் கூடுதலையும் இணைக்கும் அகத்திணை.

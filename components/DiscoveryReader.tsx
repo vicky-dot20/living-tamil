@@ -8,25 +8,29 @@ import { recordMetric } from "@/lib/analytics";
 import { useStoredStringList, writeStoredStringList } from "@/lib/local-state";
 import CorrectionLink from "./CorrectionLink";
 import { Header } from "./HomeExperience";
+import ReaderLearningTools, { useReaderPreferences } from "./ReaderLearningTools";
+import DiscoveryCheckpoint from "./DiscoveryCheckpoint";
 
 const modes = ["original", "simple", "english"] as const;
 type Mode = typeof modes[number];
 
 export default function DiscoveryReader({ discovery, journey }: { discovery: Discovery; journey: Discovery[] }) {
-  const [mode,setMode]=useState<Mode>("original"); const [copied,setCopied]=useState(false); const [shareStatus,setShareStatus]=useState("");
+  const { preferences } = useReaderPreferences();
+  const [mode,setMode]=useState<Mode|null>(null); const [copied,setCopied]=useState(false); const [shareStatus,setShareStatus]=useState("");
   const savedItems=useStoredStringList("living-tamil-saved"); const progress=useStoredStringList("living-tamil-progress");
   const index=journey.findIndex((item)=>item.slug===discovery.slug); const previous=journey[index-1]; const next=journey[index+1];
   const saved=savedItems.includes(discovery.slug); const done=progress.includes(discovery.slug);
-  useEffect(()=>{recordMetric("discovery_view");},[discovery.slug]);
+  useEffect(()=>{recordMetric("discovery_view"); const current=JSON.parse(localStorage.getItem("living-tamil-recent")??"[]") as string[]; writeStoredStringList("living-tamil-recent",[discovery.slug,...current.filter((slug)=>slug!==discovery.slug)].slice(0,8));},[discovery.slug]);
   function toggleSaved(){const updated=saved?savedItems.filter(x=>x!==discovery.slug):[...savedItems,discovery.slug];writeStoredStringList("living-tamil-saved",updated);if(!saved)recordMetric("discovery_save");}
   function complete(){if(done)return;const updated=[...progress,discovery.slug];writeStoredStringList("living-tamil-progress",updated);recordMetric("discovery_complete");if(journey.every(item=>updated.includes(item.slug)))recordMetric("journey_complete");}
   async function share(){if(navigator.share)await navigator.share({title:discovery.title,text:discovery.summary,url:location.href});else{await navigator.clipboard.writeText(location.href);setCopied(true);setTimeout(()=>setCopied(false),1500)}setShareStatus("Discovery link ready to share");recordMetric("discovery_share");}
-  const reading=mode==="original"?discovery.original:mode==="simple"?discovery.simple:discovery.english;
+  const activeMode=mode??preferences.layer;
+  const reading=activeMode==="original"?discovery.original:activeMode==="simple"?discovery.simple:discovery.english;
   return <div className="site-shell"><Header/><main className="reader-shell">
     <aside className="reader-rail"><Link href="/"><ArrowLeft size={16}/> All journeys</Link><p className="eyebrow">{discovery.journeyTitle}</p><h2>{index+1} of {journey.length}</h2>{journey.map((item,i)=><Link className={item.slug===discovery.slug?"current":""} href={`/discover/${item.slug}`} key={item.slug}><span>{i+1}</span>{item.tamilTitle}</Link>)}</aside>
     <article className="reader-card">
       <div className={`reader-hero art-${discovery.accent}`}><div><p>{discovery.category} · {discovery.duration} min</p><span>{discovery.tamilTitle}</span><h1>{discovery.title}</h1></div><div className="reader-actions"><button onClick={toggleSaved} aria-label="Bookmark"><Bookmark fill={saved?"currentColor":"none"}/></button><button onClick={share} aria-label="Share">{copied?<Check/>:<Share2/>}</button></div><p className="sr-status" role="status" aria-live="polite">{shareStatus}</p></div>
-      <section className="reader-content"><p className="hook">{discovery.hook}</p><div className="mode-tabs">{modes.map(item=><button className={mode===item?"active":""} onClick={()=>setMode(item)} key={item}>{item==="original"?"மூலம்":item==="simple"?"எளிய தமிழ்":"English"}</button>)}</div><div className="reading" lang={mode==="english"?"en":"ta"}>{reading}</div>
+      <section className={`reader-content reading-${preferences.size} spacing-${preferences.spacing}`}><p className="hook">{discovery.hook}</p><div className="mode-tabs">{modes.map(item=><button className={activeMode===item?"active":""} onClick={()=>setMode(item)} key={item}>{item==="original"?"மூலம்":item==="simple"?"எளிய தமிழ்":"English"}</button>)}</div><div className="reading" lang={activeMode==="english"?"en":"ta"}>{reading}</div>
         <div className="context-grid"><div><small>Why it matters</small><h2>Read the world around the words.</h2><p>{discovery.context}</p></div><div><small>Connection to today</small><h2>The idea is still alive.</h2><p>{discovery.today}</p></div></div>
         <details className="provenance">
           <summary><BookOpen size={18}/><span><strong>Sources & editorial notes</strong><small>Optional · provenance and rights</small></span></summary>
@@ -40,6 +44,8 @@ export default function DiscoveryReader({ discovery, journey }: { discovery: Dis
             <a href={discovery.sourceUrl} target="_blank" rel="noreferrer">Inspect the original source <ExternalLink size={13}/></a>
           </div>
         </details>
+        <ReaderLearningTools words={discovery.words}/>
+        <DiscoveryCheckpoint checkpoint={discovery.checkpoint}/>
         <CorrectionLink item={`Discovery ${discovery.slug} — ${discovery.title}`}/>
         <button className={`complete-button ${done?"done":""}`} onClick={complete}>{done?<Check size={18}/>:null}{done?"Discovery completed":"Mark complete"}</button>
       </section>

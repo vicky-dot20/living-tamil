@@ -29,9 +29,11 @@ Planned cards:
 
 Exit criteria: 75 validated records, no unlabelled rights state, accessible search, passing CI, and documented source decisions.
 
-## v0.4.0: understanding and learning
+## v0.4.0: understanding and learning (implementation complete; release review pending)
 
 Goal: help readers retain words and ideas rather than merely browse them.
+
+Status: in progress on `codex/v0.4-learning`. Issue cards #32–#37 track the release; the first slice covers contextual word annotations, the local glossary, and reader preferences.
 
 Planned cards:
 
