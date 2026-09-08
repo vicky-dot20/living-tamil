@@ -29,7 +29,7 @@ Planned cards:
 
 Exit criteria: 75 validated records, no unlabelled rights state, accessible search, passing CI, and documented source decisions.
 
-## v0.4.0: understanding and learning
+## v0.4.0: understanding and learning (implementation complete; release review pending)
 
 Goal: help readers retain words and ideas rather than merely browse them.
 

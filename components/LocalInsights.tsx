@@ -12,6 +12,7 @@ const labels = {
   discovery_save: "Discoveries saved",
   discovery_share: "Shares attempted",
   correction_open: "Correction forms opened",
+  checkpoint_answer: "Checkpoints answered",
 };
 
 export default function LocalInsights() {

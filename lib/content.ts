@@ -4,12 +4,13 @@ import fs from "node:fs";
 import path from "node:path";
 
 export type WordAnnotation = { term: string; simple: string; english: string; sourceUrl: string; reviewStatus: string };
+export type Checkpoint = { question: string; options: string[]; answer: number; explanation: string };
 
 export type Discovery = {
   slug: string; title: string; tamilTitle: string; journey: string; journeyTitle: string;
   order: number; duration: number; category: string; accent: string; summary: string;
   hook: string; original: string; simple: string; english: string; context: string; today: string;
-  sourceTitle: string; sourceUrl: string; license: string; reviewStatus: string; words: WordAnnotation[];
+  sourceTitle: string; sourceUrl: string; license: string; reviewStatus: string; words: WordAnnotation[]; checkpoint?: Checkpoint;
 };
 
 const contentDirectory = path.join(process.cwd(), "content", "discoveries");
@@ -39,6 +40,13 @@ function parseMarkdown(source: string): Omit<Discovery, "slug"> {
       const [term = "", simple = "", english = "", sourceUrl = meta.sourceUrl, reviewStatus = meta.reviewStatus || "editorial-review"] = line.split("|").map((part) => part.trim());
       return { term, simple, english, sourceUrl, reviewStatus };
     }).filter((word) => word.term && word.simple && word.english),
+    checkpoint: clean(sections.checkpoint) ? (() => {
+      const lines = clean(sections.checkpoint).split("\n").map((line) => line.trim()).filter(Boolean);
+      const answer = Number(lines[2]);
+      return lines[0] && lines[1] && Number.isInteger(answer) && lines[3]
+        ? { question: lines[0], options: lines[1].split("|").map((option) => option.trim()), answer, explanation: lines[3] }
+        : undefined;
+    })() : undefined,
   };
 }
 
