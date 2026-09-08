@@ -10,6 +10,7 @@ export const metricNames = [
   "discovery_save",
   "discovery_share",
   "correction_open",
+  "checkpoint_answer",
 ] as const;
 
 export type MetricName = (typeof metricNames)[number];
