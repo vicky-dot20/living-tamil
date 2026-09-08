@@ -5,12 +5,13 @@ import path from "node:path";
 
 export type WordAnnotation = { term: string; simple: string; english: string; sourceUrl: string; reviewStatus: string };
 export type Checkpoint = { question: string; options: string[]; answer: number; explanation: string };
+export type EditorialReview = { status: string; reviewer?: string; reviewedAt?: string; scope?: string; revisions: string[] };
 
 export type Discovery = {
   slug: string; title: string; tamilTitle: string; journey: string; journeyTitle: string;
   order: number; duration: number; category: string; accent: string; summary: string;
   hook: string; original: string; simple: string; english: string; context: string; today: string;
-  sourceTitle: string; sourceUrl: string; license: string; reviewStatus: string; words: WordAnnotation[]; checkpoint?: Checkpoint;
+  sourceTitle: string; sourceUrl: string; license: string; reviewStatus: string; review: EditorialReview; words: WordAnnotation[]; checkpoint?: Checkpoint;
 };
 
 const contentDirectory = path.join(process.cwd(), "content", "discoveries");
@@ -36,6 +37,13 @@ function parseMarkdown(source: string): Omit<Discovery, "slug"> {
     original: clean(sections.original), simple: clean(sections.simple), english: clean(sections.english),
     context: clean(sections.context), today: clean(sections.today), sourceTitle: meta.sourceTitle,
     sourceUrl: meta.sourceUrl, license: meta.license, reviewStatus: meta.reviewStatus || "editorial-review",
+    review: {
+      status: meta.reviewStatus || "editorial-review",
+      reviewer: meta.reviewer || undefined,
+      reviewedAt: meta.reviewDate || undefined,
+      scope: meta.reviewScope || undefined,
+      revisions: clean(sections["revision history"]).split("\n").map((line) => line.replace(/^[-*]\s*/, "").trim()).filter(Boolean),
+    },
     words: clean(sections.words).split("\n").filter(Boolean).map((line) => {
       const [term = "", simple = "", english = "", sourceUrl = meta.sourceUrl, reviewStatus = meta.reviewStatus || "editorial-review"] = line.split("|").map((part) => part.trim());
       return { term, simple, english, sourceUrl, reviewStatus };

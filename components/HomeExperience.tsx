@@ -53,4 +53,4 @@ export default function HomeExperience({ discoveries, journeys }: { discoveries:
   </div>;
 }
 
-export function Header() { return <header className="topbar"><Link className="brand" href="/"><span>ழ</span><div><strong>Living Tamil</strong><small>தமிழை தினமும் கண்டறியுங்கள்</small></div></Link><nav><Link href="/">Journeys</Link><Link href="/library">Library</Link><Link href="/kural">Thirukkural</Link><Link href="/offline">Offline</Link><Link href="/insights">Insights</Link></nav></header>; }
+export function Header() { return <header className="topbar"><Link className="brand" href="/"><span>ழ</span><div><strong>Living Tamil</strong><small>தமிழை தினமும் கண்டறியுங்கள்</small></div></Link><nav><Link href="/">Journeys</Link><Link href="/library">Library</Link><Link href="/kural">Thirukkural</Link><Link href="/offline">Offline</Link><Link href="/editorial">Editorial</Link><Link href="/insights">Insights</Link></nav></header>; }
