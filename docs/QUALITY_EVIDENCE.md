@@ -24,7 +24,7 @@ Reader progress, recent items, bookmarks, glossary entries, preferences, and agg
 
 ## Performance and resilience
 
-Measure the home page, one discovery, the Kural library, and the editorial dashboard on a mobile profile. Record Core Web Vitals and test upstream delay, HTTP failure, offline navigation, cache update, and cache removal. Current API routes return clear `503` fallbacks on upstream failure; an explicit request timeout remains required before v0.5 release.
+Measure the home page, one discovery, the Kural library, and the editorial dashboard on a mobile profile. Record Core Web Vitals and test upstream delay, HTTP failure, offline navigation, cache update, and cache removal. Core Kural API requests stop after eight seconds and return structured, retryable `503` fallbacks with a `Retry-After` hint. The combined Kural and Wikisource routes must receive the same guard before v0.5 release.
 
 ## Moderated comprehension test
 
