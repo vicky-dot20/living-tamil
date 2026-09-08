@@ -49,6 +49,8 @@ Start by opening a structured issue. Once its scope is accepted and assigned, wo
 - [Version roadmap through v0.5.0](docs/VERSION_ROADMAP.md)
 - [Source and rights register](docs/SOURCES.md)
 - [Editorial policy](docs/EDITORIAL_POLICY.md)
+- [Quality evidence and test protocol](docs/QUALITY_EVIDENCE.md)
+- [Release and rollback checklist](docs/RELEASE_CHECKLIST.md)
 - [Contribution guide](CONTRIBUTING.md)
 - [Security policy](SECURITY.md)
 - [Community standards](CODE_OF_CONDUCT.md)
