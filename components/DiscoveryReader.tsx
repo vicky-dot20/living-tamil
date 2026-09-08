@@ -40,6 +40,7 @@ export default function DiscoveryReader({ discovery, journey }: { discovery: Dis
               <div><dt>Primary collection</dt><dd>{discovery.sourceTitle}</dd></div>
               <div><dt>Reuse status</dt><dd>{discovery.license}</dd></div>
               <div><dt>Editorial status</dt><dd>{discovery.reviewStatus.replaceAll("-"," ")}</dd></div>
+              <div><dt>Reviewer evidence</dt><dd>{discovery.review.reviewer ? `${discovery.review.reviewer} · ${discovery.review.reviewedAt} · ${discovery.review.scope}` : "No named reviewer recorded; treat as pending."}</dd></div>
             </dl>
             <a href={discovery.sourceUrl} target="_blank" rel="noreferrer">Inspect the original source <ExternalLink size={13}/></a>
           </div>
